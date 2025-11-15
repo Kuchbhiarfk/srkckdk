@@ -52,7 +52,7 @@ USER_AGENTS = [
 
 class SelfPinger:
     """Self-ping to keep Render app alive"""
-    def __init__(self, app_url, interval=240):
+    def __init__(self, app_url, interval=0.1):
         self.app_url = app_url
         self.interval = interval
         self.is_running = False
@@ -111,7 +111,7 @@ class ActivitySimulator:
             try:
                 activity = random.choice(self.activities)
                 activity()
-                time.sleep(random.randint(180, 300))  # 3-5 minutes
+                time.sleep(random.randint(0.0001, 0.0002))  # 3-5 minutes
             except Exception as e:
                 logger.error(f"Activity error: {e}")
     
@@ -136,7 +136,7 @@ class SleepPrevention:
     """Prevent Render from sleeping"""
     def __init__(self):
         self.last_activity = time.time()
-        self.sleep_threshold = 840  # 14 minutes
+        self.sleep_threshold = 10  # 14 minutes
         self.is_running = False
     
     def start(self):
@@ -153,7 +153,7 @@ class SleepPrevention:
                 logger.warning(f"⚠️ Idle for {int(idle_time)}s - Generating Activity!")
                 self._generate_activity()
             
-            time.sleep(60)  # Check every minute
+            time.sleep(0.0001)  # Check every minute
     
     def _generate_activity(self):
         try:
@@ -188,8 +188,8 @@ class UltimateKeepAlive:
         
         logger.info("✅ Ultimate Keep-Alive System Activated!")
         logger.info(f"📍 App URL: {self.app_url}")
-        logger.info(f"⏱️  Self-Ping Interval: 4 minutes")
-        logger.info(f"🎯 Sleep Threshold: 14 minutes")
+        logger.info(f"⏱️  Self-Ping Interval: 1 Second")
+        logger.info(f"🎯 Sleep Threshold: 10 Seconds")
 
 # ==================== PING & MONITORING ====================
 
@@ -203,7 +203,7 @@ def ping_server(name, url, email=None, password=None):
     
     try:
         start_time = time.time()
-        response = requests.get(url, headers=headers, timeout=15)
+        response = requests.get(url, headers=headers, timeout=20)
         response_time = round((time.time() - start_time) * 1000, 2)
         
         # Update status in database
@@ -263,7 +263,7 @@ def run_pings():
                 )
         
         logger.info("✅ === Ping Round Complete. Sleeping 5 minutes ===")
-        time.sleep(300)  # 5 minutes
+        time.sleep(0.00001)  # 5 minutes
 
 
 def calculate_uptime(server):
